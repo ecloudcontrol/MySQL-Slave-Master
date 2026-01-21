@@ -1,0 +1,57 @@
+    app:
+        name: MySQL-Slave-test
+        code: mysql
+        notify: appzdev@cloudbourne.co
+
+    build:
+        version: 1.1
+        env: PROD
+        build_file: none
+        output_files: output/*.zip
+        image_template: mysql_slave-8.0
+
+    deploy:
+        context: tipreprod/PROD
+        type: statefulset
+        replicas: 4
+        #ingress: none
+       # resources: x-large
+        port:
+        - 3306
+        - 9104
+    volumes:
+      - claim: mysql-data
+        class: linode-block-storage
+        mount: /var/lib/mysql
+        name: data
+        size: 5Gi
+        matchLabels: false
+      - claim: mysql-backup
+        class: linode-block-storage
+        mount: /appz/backup
+        name: backup
+        size: 5Gi
+        matchLabels: false
+
+    properties:
+        MYSQL_REPLICATION_USER: repl
+        MYSQL_REPLICATION_PASSWORD:
+          vault: MYSQL_REPLICATION_PASSWORD
+        MYSQL_ROOT_PASSWORD:
+          vault: MYSQL_ROOT_PASSWORD_KEY
+        BINLOG_EXPIRE_LOGS_SECONDS: 259200
+        DRY_RUN: false
+        DAILY_KEEP_DAYS: 7
+        WEEKLY_KEEP_WEEKS: 4
+        MONTHLY_KEEP_MONTHS: 12
+        AKAMAI_ACCESS_KEY:
+          vault: AKAMAI_ACCESS_KEY
+        AKAMAI_SECRET_KEY:
+          vault: AKAMAI_SECRET_KEY
+        AKAMAI_BUCKET: mysql-backup
+        AKAMAI_ENDPOINT: https://us-iad-10.linodeobjects.com
+        AKAMAI_REGION: us-iad-10
+        DB_MASTER: 10.10.51.147
+        BACKUP_RETENTION: 1
+        revision : 23
+     
