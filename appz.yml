@@ -53,5 +53,5 @@
         AKAMAI_REGION: us-iad-10
         DB_MASTER: 10.10.51.147
         BACKUP_RETENTION: 1
-        revision : 23
+        revision : 2
      
