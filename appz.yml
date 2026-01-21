@@ -1,10 +1,10 @@
     app:
-        name: MySQL-Slave-test
+        name: MySQL-Slave-new
         code: mysql
         notify: appzdev@cloudbourne.co
 
     build:
-        version: 1.1
+        version: 8.5
         env: PROD
         build_file: none
         output_files: output/*.zip
@@ -13,7 +13,7 @@
     deploy:
         context: tipreprod/PROD
         type: statefulset
-        replicas: 4
+        replicas: 1
         #ingress: none
        # resources: x-large
         port:
@@ -24,13 +24,13 @@
         class: linode-block-storage
         mount: /var/lib/mysql
         name: data
-        size: 10Gi
+        size: 500Gi
         matchLabels: false
       - claim: mysql-backup
         class: linode-block-storage
         mount: /appz/backup
         name: backup
-        size: 10Gi
+        size: 500Gi
         matchLabels: false
 
     properties:
@@ -53,5 +53,5 @@
         AKAMAI_REGION: us-iad-10
         DB_MASTER: 10.10.51.147
         BACKUP_RETENTION: 1
-        revision : 7
+        revision : 23
      
