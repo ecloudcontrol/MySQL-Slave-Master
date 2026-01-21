@@ -30,7 +30,7 @@
         class: linode-block-storage
         mount: /appz/backup
         name: backup
-        size: 50Gi
+        size: 10Gi
         matchLabels: false
 
     properties:
